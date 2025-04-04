@@ -45,7 +45,6 @@ public class ProductDB {
                     rs.getInt("stock")
                 );
                 productList.add(product);
-                  JOptionPane.showMessageDialog(null, "Database is intialize", "success", JOptionPane.INFORMATION_MESSAGE);
             }
 
         } catch (SQLException e) {
@@ -54,5 +53,53 @@ public class ProductDB {
 
         return productList;
     }
+      
+   public void insertOrder(String productName, String category, double price, int stock) {
+    String SQLDb = JavaSQLiteDB.database_url;  // Database URL
+    String query = JavaSQLiteDB.orderSql;       // The SQL query for inserting into the OrderTable
+
+    try (Connection conn = DriverManager.getConnection(SQLDb);
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        // Insert values into the OrderTable
+        stmt.setInt(1, getProductIdByName(productName));  // Get the product_id from the name (you need to implement this)
+        stmt.setString(2, productName);                    // product_name
+        stmt.setString(3, category);                       // category
+        stmt.setFloat(4, (float) price);                           // price
+        stmt.setInt(5, 1);                                 // Assuming quantity is always 1 for this example (you can modify if needed)
+
+        // Execute the insertion
+        stmt.executeUpdate();
+
+        // Optionally show a success message
+        JOptionPane.showMessageDialog(null, "Order placed successfully!");
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    // Get product_id by product_name from the database
+    private int getProductIdByName(String productName) {
+        String SQLDb = JavaSQLiteDB.database_url;  // Database URL
+        String query = "SELECT product_id FROM Product WHERE product_name = ?";  // Query to fetch product_id by name
+
+        try (Connection conn = DriverManager.getConnection(SQLDb);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, productName);  // Set product name parameter
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("product_id");  // Return the product_id
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return -1;  // Return -1 if product is not found
+    }
+
     
 }

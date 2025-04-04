@@ -26,7 +26,7 @@ public class ProductListFrame extends JFrame {
         setLayout(null);
 
         // Table setup
-        String[] columnNames = {"Product Name", "Category", "Price"};
+        String[] columnNames = {"Product Name", "Category", "Price", "Stocks"};
         tableModel = new DefaultTableModel(columnNames, 0);
         productTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(productTable);
@@ -41,8 +41,10 @@ public class ProductListFrame extends JFrame {
         btnBack = new JButton("Back");
         btnBack.setBounds(200, 200, 120, 30);
         add(btnBack);
-
+        
+        loadData();
        loadProductData();
+       
 
         // Button Listeners
         btnAddToCart.addActionListener(e -> addToCartAction());
@@ -58,34 +60,21 @@ public class ProductListFrame extends JFrame {
     }
 
 
-    private void addToCartAction() {
-        int selectedRow = productTable.getSelectedRow();
-        if (selectedRow != -1) {
-            String productName = (String) tableModel.getValueAt(selectedRow, 0);
-            for (Product product : productList) {
-                if (product.getName().equals(productName)) {
-                    boolean found = false;
-                    for (Product cartProduct : cartItems){
-                        if(cartProduct.getName().equals(productName)){
-                            cartProduct.setStock(cartProduct.getStock() + 1);
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        Product newProduct = new Product(product.getProductID(),product.getName(),product.getCategory(),(float)product.getPrice(), 1);
-                        
-                        cartItems.add(newProduct);
-                    }
-                    JOptionPane.showMessageDialog(this, productName + " added to Cart!");
-                    break;
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a product to add to the cart", "Error", JOptionPane.WARNING_MESSAGE);
-        }
+   private void addToCartAction() {
+    int selectedRow = productTable.getSelectedRow();
+    if (selectedRow != -1) {
+        // Get the selected product details from the table
+        String productName = (String) tableModel.getValueAt(selectedRow, 0);
+        String productCategory = (String) tableModel.getValueAt(selectedRow, 1);
+       Double productPrice = (Double) tableModel.getValueAt(selectedRow, 2);
+        int productStock = (Integer) tableModel.getValueAt(selectedRow, 3);
+        
+        // Insert the selected product directly into the OrderTable
+        ProductDB.getInstance().insertOrder(productName, productCategory, productPrice, productStock);
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a product to add to the order.", "Error", JOptionPane.WARNING_MESSAGE);
     }
-    
+}
     private void checkoutAction(){
         if (cartItems.isEmpty()){
          
@@ -99,6 +88,14 @@ public class ProductListFrame extends JFrame {
                // loadProductData();
                
             }
+        }
+    }
+    
+    void loadData(){
+        try{
+            productList = ProductDB.getInstance().getProducts();
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 

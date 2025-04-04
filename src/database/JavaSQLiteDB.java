@@ -26,6 +26,8 @@ public class JavaSQLiteDB {
     
     public static String productSql ="SELECT product_id, product_name, category, price, stock FROM Product";
        
+    public static String orderSql ="Insert INTO OrderTable (product_id, product_name, category, price, quantity) VALUES(?,?,?,?,?)";
+   
     public static void main(String[] args){
         connection();
     }
