@@ -27,6 +27,7 @@ public class ProductDB {
      return instance;
     }
     
+    // get the product
       public List<Product> getProducts() {
          List<Product> productList = new ArrayList<>();
         String query = JavaSQLiteDB.productSql;
@@ -54,6 +55,7 @@ public class ProductDB {
         return productList;
     }
       
+      // insert the orders from the database
  public void insertOrder(String productName, String category, double price, int stock) {
     String SQLDb = JavaSQLiteDB.database_url;  // Database URL
     String query = JavaSQLiteDB.orderSql;       // The SQL query for inserting into the OrderTable

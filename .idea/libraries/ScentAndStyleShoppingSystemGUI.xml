@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ScentAndStyleShoppingSystemGUI">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/ScentAndStyleShoppingSystemGUI.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
