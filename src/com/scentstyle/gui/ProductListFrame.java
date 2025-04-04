@@ -69,6 +69,11 @@ public class ProductListFrame extends JFrame {
        Double productPrice = (Double) tableModel.getValueAt(selectedRow, 2);
         int productStock = (Integer) tableModel.getValueAt(selectedRow, 3);
         
+        if(productStock==0){
+              JOptionPane.showMessageDialog(this, "The Stock is Empty", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         // Insert the selected product directly into the OrderTable
         ProductDB.getInstance().insertOrder(productName, productCategory, productPrice, productStock);
     } else {

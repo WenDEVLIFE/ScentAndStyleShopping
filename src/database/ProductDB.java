@@ -54,22 +54,32 @@ public class ProductDB {
         return productList;
     }
       
-   public void insertOrder(String productName, String category, double price, int stock) {
+ public void insertOrder(String productName, String category, double price, int stock) {
     String SQLDb = JavaSQLiteDB.database_url;  // Database URL
     String query = JavaSQLiteDB.orderSql;       // The SQL query for inserting into the OrderTable
+    String updateStockQuery = "UPDATE Product SET stock = stock - ? WHERE product_name = ?"; // Query to update stock
 
     try (Connection conn = DriverManager.getConnection(SQLDb);
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
         // Insert values into the OrderTable
-        stmt.setInt(1, getProductIdByName(productName));  // Get the product_id from the name (you need to implement this)
+        stmt.setInt(1, getProductIdByName(productName));  // Get the product_id from the name
         stmt.setString(2, productName);                    // product_name
         stmt.setString(3, category);                       // category
-        stmt.setFloat(4, (float) price);                           // price
+        stmt.setFloat(4, (float) price);                   // price
         stmt.setInt(5, 1);                                 // Assuming quantity is always 1 for this example (you can modify if needed)
 
         // Execute the insertion
         stmt.executeUpdate();
+
+        // Update the product stock after order is placed
+        try (PreparedStatement updateStmt = conn.prepareStatement(updateStockQuery)) {
+            updateStmt.setInt(1, 1);  // Decrease by 1 (adjust this if needed)
+            updateStmt.setString(2, productName);  // Product name
+
+            // Execute the stock update
+            updateStmt.executeUpdate();
+        }
 
         // Optionally show a success message
         JOptionPane.showMessageDialog(null, "Order placed successfully!");
