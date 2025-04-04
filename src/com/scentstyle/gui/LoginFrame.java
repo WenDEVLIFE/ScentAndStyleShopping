@@ -1,5 +1,6 @@
 package com.scentstyle.gui;
 
+import database.LoginDatabase;
 import database.RegisterUser;
 import javax.swing.*;
 import java.awt.event.*;
@@ -78,7 +79,7 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        String role = validateLogin(email, password);
+        String role = LoginDatabase.getInstance().loginUser(email, password);
         if (role == null) {
             JOptionPane.showMessageDialog(this, "Invalid email or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
         } else if (role.equals("Admin")) {
@@ -140,33 +141,6 @@ public class LoginFrame extends JFrame {
         return null;
     }
 
-    private boolean registerUser(String email, String password, String role) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-            writer.write(email + "," + password + "," + role);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    
- 
-
-    private boolean isEmailRegistered(String email) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] credentials = line.split(",");
-                if (credentials[0].equals(email)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));

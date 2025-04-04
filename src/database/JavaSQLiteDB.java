@@ -20,6 +20,9 @@ public class JavaSQLiteDB {
     
     // check if the email exist
     public static String checkEmail ="SELECT COUNT (*) AS count FROM Users WHERE email = ?";
+    
+    // This will login the user from the database
+    public static String loginSql = "SELECT password, role FROM Users WHERE email = ?";
        
     public static void main(String[] args){
         connection();
