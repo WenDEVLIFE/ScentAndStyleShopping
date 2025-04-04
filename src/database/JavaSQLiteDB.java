@@ -23,6 +23,8 @@ public class JavaSQLiteDB {
     
     // This will login the user from the database
     public static String loginSql = "SELECT password, role FROM Users WHERE email = ?";
+    
+    public static String productSql ="SELECT product_id, product_name, category, price, stock FROM Product";
        
     public static void main(String[] args){
         connection();

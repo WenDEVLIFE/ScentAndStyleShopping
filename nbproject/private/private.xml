@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/controller/Main.java</file>
             <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/database/JavaSQLiteDB.java</file>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/database/RegisterUser.java</file>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/LoginFrame.java</file>
+            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/database/ProductDB.java</file>
+            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/ProductListFrame.java</file>
+            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/UserDasdboard.java</file>
         </group>
     </open-files>
 </project-private>

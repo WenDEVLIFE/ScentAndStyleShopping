@@ -50,7 +50,7 @@ public class UserDasdboard extends JFrame {
     }
 
     private void openProductList() {
-        new ProductListFrame(productList, cartItems).setVisible(true);
+        new ProductListFrame().setVisible(true);
         dispose();
     }
 

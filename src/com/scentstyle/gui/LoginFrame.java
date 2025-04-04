@@ -125,23 +125,6 @@ public class LoginFrame extends JFrame {
         }
      */
     }
-
-    private String validateLogin(String email, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] credentials = line.split(",");
-                if (credentials[0].equals(email) && credentials[1].equals(password)) {
-                    return credentials[2]; // Return role (Admin/User)
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
     }

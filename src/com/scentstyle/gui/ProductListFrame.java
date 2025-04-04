@@ -3,7 +3,9 @@ package com.scentstyle.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import com.scentstyle.model.Product;
+import database.ProductDB;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListFrame extends JFrame {
@@ -13,9 +15,9 @@ public class ProductListFrame extends JFrame {
     private List<Product> productList;
     private List<Product> cartItems;
 
-    public ProductListFrame(List<Product> productList, List<Product> cartItems) {
-        this.productList = productList;
-        this.cartItems = cartItems;
+    public ProductListFrame() {
+        productList = ProductDB.getInstance().getProducts();
+        List<Product> cartItems = new ArrayList<Product>();
 
         setTitle("Product List - Scent & Style");
         setSize(500, 300);
@@ -40,7 +42,7 @@ public class ProductListFrame extends JFrame {
         btnBack.setBounds(200, 200, 120, 30);
         add(btnBack);
 
-        loadProductData();
+       loadProductData();
 
         // Button Listeners
         btnAddToCart.addActionListener(e -> addToCartAction());
@@ -54,6 +56,7 @@ public class ProductListFrame extends JFrame {
             tableModel.addRow(row);
         }
     }
+
 
     private void addToCartAction() {
         int selectedRow = productTable.getSelectedRow();
@@ -93,7 +96,8 @@ public class ProductListFrame extends JFrame {
                 
                 JOptionPane.showMessageDialog(this, "Checkout successfull! Thank you for shopping with Scent & Style.");
                 cartItems.clear();
-                loadProductData();
+               // loadProductData();
+               
             }
         }
     }
