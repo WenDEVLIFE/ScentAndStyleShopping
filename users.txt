@@ -1,0 +1,16 @@
+abalos@example.com,abalos
+bff@example.com,abalos123
+admin@example.com,admin123
+cristine@example.com,cristine
+angel@example.com,angel
+nicks@example.com,nicks
+ivy123@example.com,ivy,user
+allen@example.com,allen,Admin
+jay@example.com,jay,User
+yuna@example.com,yuna,User
+user@example.com,user123,User
+admin2example.com,admin123,Admin
+admin123@example.com,admin,User
+medinajr@gmail.com,wenwen,Admin
+meow234@gmail.com,wenwen,User
+wenwen@gmail.com,wenwen,User
