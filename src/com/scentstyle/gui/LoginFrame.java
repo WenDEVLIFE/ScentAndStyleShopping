@@ -1,8 +1,11 @@
 package com.scentstyle.gui;
 
+import database.RegisterUser;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginFrame extends JFrame {
     private JTextField txtEmail;
@@ -108,11 +111,18 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        if (registerUser(email, password, role)) {
+        
+        Map <String, String> meow = new HashMap<>();
+         meow.put("email", email);
+        meow.put("password", password);
+        meow.put("role", role);
+        RegisterUser.getInstance().InsertUser(meow);
+       /* if (registerUser(email, password, role)) {
             JOptionPane.showMessageDialog(this, "Registration successful! You can now log in.");
         } else {
             JOptionPane.showMessageDialog(this, "Error occurred while registering. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+     */
     }
 
     private String validateLogin(String email, String password) {
@@ -140,6 +150,8 @@ public class LoginFrame extends JFrame {
         }
         return true;
     }
+    
+ 
 
     private boolean isEmailRegistered(String email) {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {

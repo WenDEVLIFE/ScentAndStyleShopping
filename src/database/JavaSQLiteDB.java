@@ -12,6 +12,8 @@ import java.sql.DriverManager;
  * @author Frouen Junior
  */
 public class JavaSQLiteDB {
+    public static String database_url ="jdbc:sqlite:shopdatabase.db";
+    public static String insertUser ="Insert INTO Users (email, password, role) VALUES(?,?,?)";
     
     public static void main(String[] args){
         connection();
@@ -20,7 +22,7 @@ public class JavaSQLiteDB {
         Connection conn = null;
         
         try{
-            String database_url ="jdbc:sqlite:shopdatabase.db";
+            database_url ="jdbc:sqlite:shopdatabase.db";
             conn = DriverManager.getConnection(database_url);
             System.out.println("SQLite Initialize");
         } catch(SQLException e){

@@ -5,11 +5,14 @@ import com.scentstyle.gui.CartFrame;
 import com.scentstyle.gui.LoginFrame;
 import com.scentstyle.gui.ProductListFrame;
 import com.scentstyle.gui.UserDasdboard;
+import database.JavaSQLiteDB;
 
 public class Main {
     public static void main(String[] args) {
        // Display the Login Frame at the start
        showLoginFrame();
+       JavaSQLiteDB obj = new JavaSQLiteDB();
+       obj.connection();
     }
     
       // Show Login Frame
