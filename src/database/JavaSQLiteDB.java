@@ -12,9 +12,15 @@ import java.sql.DriverManager;
  * @author Frouen Junior
  */
 public class JavaSQLiteDB {
+    // database url
     public static String database_url ="jdbc:sqlite:shopdatabase.db";
+    
+    // insert user
     public static String insertUser ="Insert INTO Users (email, password, role) VALUES(?,?,?)";
     
+    // check if the email exist
+    public static String checkEmail ="SELECT COUNT (*) AS count FROM Users WHERE email = ?";
+       
     public static void main(String[] args){
         connection();
     }

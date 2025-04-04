@@ -106,7 +106,7 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        if (isEmailRegistered(email)) {
+        if (RegisterUser.getInstance().emailExist(email)) {
             JOptionPane.showMessageDialog(this, "Email already registered. Please use a different email.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

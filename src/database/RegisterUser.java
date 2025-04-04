@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -16,6 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class RegisterUser {
     private static volatile RegisterUser instance;
+    final String SQLiteDB = JavaSQLiteDB.database_url;
+    
     
     public static RegisterUser getInstance(){
         if(instance==null){
@@ -26,7 +29,7 @@ public class RegisterUser {
     }
     
     public void InsertUser(Map<String, String> meow){
-        String SQLiteDB = JavaSQLiteDB.database_url;
+        
         String insertUsers = JavaSQLiteDB.insertUser;
         
         try(Connection conn = DriverManager.getConnection(SQLiteDB);
@@ -50,4 +53,25 @@ public class RegisterUser {
                 }
     }
     
+    
+    public boolean emailExist(String email){
+        String checkEmails = JavaSQLiteDB.checkEmail;
+        
+        try(Connection conn=DriverManager.getConnection(SQLiteDB);
+        PreparedStatement db = conn.prepareStatement(checkEmails)){
+            
+            db.setString(1, email);
+            ResultSet rs = db.executeQuery();
+            
+            if(rs.next()){
+                int count = rs.getInt("count");
+                return count >0;
+            }
+            
+        }catch(SQLException e){
+            
+        }
+        
+        return false;
+    }
 }
