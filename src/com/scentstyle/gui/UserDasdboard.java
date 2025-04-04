@@ -55,7 +55,7 @@ public class UserDasdboard extends JFrame {
     }
 
     private void openCart() {
-        new CartFrame(cartItems).setVisible(true);
+        new CartFrame().setVisible(true);
         dispose();
     }
 

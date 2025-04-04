@@ -2,7 +2,11 @@ package com.scentstyle.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import com.scentstyle.model.CartModel;
 import com.scentstyle.model.Product;
+import database.CartDB;
+
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +15,10 @@ public class CartFrame extends JFrame {
     private JTable cartTable;
     private JButton btnCheckout, btnBack;
     private DefaultTableModel tableModel;
-    private List<Product> cartItems;
+    private List<CartModel> cartItems;
 
-    public CartFrame(List<Product> cartItems) {
+    public CartFrame() {
         // Ensure cartItems is not null, and initialize if necessary
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
-        
-        this.cartItems = cartItems;
         setTitle("Cart - Scent & Style");
         setSize(500, 300);
         setLocationRelativeTo(null);
@@ -42,7 +41,7 @@ public class CartFrame extends JFrame {
         btnBack = new JButton("Back");
         btnBack.setBounds(200, 200, 120, 30);
         add(btnBack);
-
+        loadCart(); // Load cart items from the database
         loadCartData();  // Load cart data when frame is initialized
 
         // Button Listeners
@@ -50,16 +49,23 @@ public class CartFrame extends JFrame {
         btnBack.addActionListener(e -> goBack());
     }
 
+    void loadCart(){
+        cartTable.clearSelection();
+        cartItems = new ArrayList<>();
+        cartItems = CartDB.getInstance().getCartItems(); // Fetch cart items from the database
+        loadCartData(); // Load data into the table
+    }
+
     // Load cart data into the table properly
     private void loadCartData() {
         tableModel.setRowCount(0); // Clear existing rows in the table
-        for (Product product : cartItems) {
+        for (CartModel product : cartItems) {
             // Assuming product.getQuantityInCart() holds the quantity for each product in the cart
             Object[] row = {
-                product.getName(),
+                product.getProductname(),
                 product.getCategory(),
                 product.getPrice(),
-                product.getStock() // Correct quantity field
+                product.getQuantity()
             };
             tableModel.addRow(row); // Add row to the table
         }
@@ -67,15 +73,24 @@ public class CartFrame extends JFrame {
 
     // Checkout action
     private void checkoutAction() {
+        int selectedRow = cartTable.getSelectedRow();
         if (cartItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Your cart is empty!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+
+            String productName = (String) cartTable.getValueAt(selectedRow, 0);
+            String category = (String) cartTable.getValueAt(selectedRow, 1);
+            double price = (double) cartTable.getValueAt(selectedRow, 2);
+            int quantity = (int) cartTable.getValueAt(selectedRow, 3);
+
+
+
+
             // Show success message on the Event Dispatch Thread (EDT)
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JOptionPane.showMessageDialog(CartFrame.this, "Checkout successful! Thank you for shopping with Scent & Style.");
-                    cartItems.clear(); // Clear cart after checkout
+                    JOptionPane.showMessageDialog(CartFrame.this, "Checkout successful! Thank you for shopping with Scent & Style." +productName);
                     loadCartData(); // Refresh the table after checkout
                 }
             });
@@ -88,22 +103,6 @@ public class CartFrame extends JFrame {
         dispose(); // Close the CartFrame
     }
 
-    // Add a new product to the cart and update the view
-    public void addProductToCart(Product product) {
-        cartItems.add(product); // Add product to cart list
-        loadCartData(); // Reload table data to reflect the new product
-    }
-
-    // Method to update a product's quantity if needed
-    public void updateProductQuantity(Product product, int stock) {
-        for (Product p : cartItems) {
-            if (p.equals(product)) {
-                p.setStock(stock); // Update the quantity
-                break;
-            }
-        }
-        loadCartData(); // Reload table after updating quantity
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

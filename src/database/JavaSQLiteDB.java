@@ -31,7 +31,7 @@ public class JavaSQLiteDB {
     public static String orderSql ="Insert INTO OrderTable (product_id, product_name, category, price, quantity) VALUES(?,?,?,?,?)";
    
     // get the orders 
-    public static String displayOrderSql ="SELECT FROM";
+    public static String cartSQL ="SELECT order_id, product_id, product_name, category, price, quantity FROM OrderTable";
     
     public static void main(String[] args){
         connection();
