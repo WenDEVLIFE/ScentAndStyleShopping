@@ -5,6 +5,7 @@ import com.scentstyle.model.CartModel;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CartDB {
@@ -45,5 +46,8 @@ public class CartDB {
         }
 
         return cartList;
+    }
+
+    public void insertOrder(HashMap<String, Object> orderDetails) {
     }
 }
