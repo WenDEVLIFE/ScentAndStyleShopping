@@ -108,6 +108,7 @@ public class CartFrame extends JFrame {
 
                 if (paymentResponse == JOptionPane.OK_OPTION) {
                     String selectedPaymentMethod = (String) paymentMethodComboBox.getSelectedItem();
+                    assert selectedPaymentMethod != null;
                     if (selectedPaymentMethod.equals("Select a payment")) {
                         JOptionPane.showMessageDialog(this, "Please select a valid payment method.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -131,8 +132,14 @@ public class CartFrame extends JFrame {
                                 orderDetails.put("customer_name", customerName);
                                 orderDetails.put("payment_method", selectedPaymentMethod);
                                 orderDetails.put("amount", priceAmount);
+                                orderDetails.put("total_price", totalPrice);
+                                orderDetails.put("order_date", java.time.LocalDate.now().toString());
+                                orderDetails.put("status", "Pending");
+                                orderDetails.put("product_id", cartItems.get(selectedRow).getProductID()); // Assuming getProductID() method exists
+                                orderDetails.put("pay_amount", priceAmount);
+                                orderDetails.put("payment_option", selectedPaymentMethod);
+                                orderDetails.put("order_id", cartItems.get(selectedRow).getOrderID()); // Assuming getOrderID() method exists
                                 CartDB.getInstance().insertOrder(orderDetails); // Insert order into the database
-                                JOptionPane.showMessageDialog(this, "Order placed successfully! Thank you for shopping with Scent & Style.");
                                 loadCartData(); // Refresh the table after checkout
                             }
                         } else {
@@ -148,14 +155,6 @@ public class CartFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Customer Name is Empty, Please Enter your name.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return; // Exit the method if checkout is cancelled
             }
-
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    JOptionPane.showMessageDialog(CartFrame.this, "Checkout successful! Thank you for shopping with Scent & Style.");
-                    loadCartData(); // Refresh the table after checkout
-                }
-            });
         }
     }
 
