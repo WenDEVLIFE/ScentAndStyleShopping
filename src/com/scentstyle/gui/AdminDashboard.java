@@ -26,7 +26,7 @@ public class AdminDashboard extends JFrame {
         btnManageProduct.setBounds(100, 50, 200, 30);
         add(btnManageProduct);
         
-        btnViewOrders = new JButton("View Order");
+        btnViewOrders = new JButton("View Order History");
         btnViewOrders.setBounds(100, 100, 200, 30);
         add(btnViewOrders);
         
@@ -70,6 +70,10 @@ public class AdminDashboard extends JFrame {
     // Method to open order view
     private void openOrderView() {
         JOptionPane.showMessageDialog(this, "Opening Order View...");
+
+        OrderManagement orderManagement = new OrderManagement();
+        orderManagement.setVisible(true);
+        dispose(); // Close current frame
 
     }
 
