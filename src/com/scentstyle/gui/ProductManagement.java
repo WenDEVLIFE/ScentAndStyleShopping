@@ -3,7 +3,9 @@ package com.scentstyle.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import com.scentstyle.model.Product;
-import java.awt.event.*;
+import database.ProductDB;
+
+import java.awt.*;
 import java.util.List;
 
 public class ProductManagement extends JFrame {
@@ -12,21 +14,29 @@ public class ProductManagement extends JFrame {
     private DefaultTableModel tableModel;
     private List<Product> productList;
     
-    public ProductManagement(List<Product> productList){
-        this.productList = productList;
+    public ProductManagement(){
+        // Sample product list for demonstration
+        productList = ProductDB.getInstance().getProducts();
         
         setTitle("Product Management - Scent & Style");
         setSize(600, 350);
         setLocationRelativeTo(null);
         
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(Color.ORANGE);
         setLayout(null);
-        
-        String[] columnNames = {"Product Name", "Category", "Price"};
+
+        // Table setup
+        JLabel lblTitle = new JLabel("Product List");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitle.setBounds(200, 10, 200, 30);
+        add(lblTitle);
+
+        String[] columnNames = {"Product ID","Product Name", "Category", "Price", "Stocks"};
         tableModel = new DefaultTableModel(columnNames, 0);
         productTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(productTable);
-        scrollPane.setBounds(20, 20, 550, 150);
+        scrollPane.setBounds(20, 40, 550, 150);
         add(scrollPane);
         
         btnAddProduct = new JButton("Add Product");
@@ -38,21 +48,29 @@ public class ProductManagement extends JFrame {
         add(btnEditProduct);
         
         btnDeleteProduct = new JButton("Delete Product");
-        btnDeleteProduct.setBounds(350, 200, 120, 30);
+        btnDeleteProduct.setBounds(350, 200, 150, 30);
         add(btnDeleteProduct);
         
         btnBack = new JButton("Back");
         btnBack.setBounds(250, 250, 120, 30);
         add(btnBack);
-        
+
+        loadData();
         loadProductData();
         
-        btnAddProduct.addActionListener(e -> deleteProductAction());
+        btnAddProduct.addActionListener(e -> addProductAction());
         btnEditProduct.addActionListener(e -> editProductAction());
         btnDeleteProduct.addActionListener(e -> deleteProductAction());
         btnBack.addActionListener(e -> goBack());
     }
     
+    void loadData(){
+        try{
+            productList = ProductDB.getInstance().getProducts();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     private void loadProductData() {
         tableModel.setRowCount(0);
         for (Product product : productList) {
@@ -66,14 +84,14 @@ public class ProductManagement extends JFrame {
         String category = JOptionPane.showInputDialog(this, "Enter product category:");
         double price;
         int stock;
-        
-        try{
+
+        try {
             price = Double.parseDouble(JOptionPane.showInputDialog(this, "Enter product price:"));
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid price. Please enter a valid number.");
             return;
         }
-        
+
         try {
             stock = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter product stock:"));
         } catch (NumberFormatException e) {
@@ -82,10 +100,11 @@ public class ProductManagement extends JFrame {
         }
 
         if (name != null && category != null && !name.trim().isEmpty() && !category.trim().isEmpty()) {
-            int productID = generateProductID(); // Generate unique product ID
-            productList.add(new Product(productID, name.trim(), category.trim(), (float) price, stock));
+            int productID = generateProductID();
+            Product newProduct = new Product(productID, name.trim(), category.trim(), (float) price, stock);
+            ProductDB.getInstance().insertProduct(newProduct);
+            productList.add(newProduct);
             loadProductData();
-            JOptionPane.showMessageDialog(this, "Product added successfully!");
         } else {
             JOptionPane.showMessageDialog(this, "Product information cannot be empty.");
         }
@@ -122,8 +141,8 @@ public class ProductManagement extends JFrame {
                     selectedProduct.setCategory(newCategory.trim());
                     selectedProduct.setPrice((float) newPrice);
                     selectedProduct.updateStock(newStock);
+                    ProductDB.getInstance().updateProduct(selectedProduct);
                     loadProductData();
-                    JOptionPane.showMessageDialog(this, "Product updated successfully!");
                 } else {
                     JOptionPane.showMessageDialog(this, "Product information cannot be empty.");
                 }
@@ -137,9 +156,9 @@ public class ProductManagement extends JFrame {
         int selectedRow = productTable.getSelectedRow();
         if (selectedRow != -1) {
             int productID = (int) tableModel.getValueAt(selectedRow, 0);
+            ProductDB.getInstance().deleteProduct(productID);
             productList.removeIf(product -> product.getProductID() == productID);
             loadProductData();
-            JOptionPane.showMessageDialog(this, "Product deleted successfully!");
         } else {
             JOptionPane.showMessageDialog(this, "Please select a product to delete.", "Error", JOptionPane.WARNING_MESSAGE);
         }
@@ -151,7 +170,7 @@ public class ProductManagement extends JFrame {
     }
 
     private int generateProductID() {
-        return productList.isEmpty() ? 1 : productList.stream().mapToInt(Product::getProductID).max().getAsInt() + 1; // Simple ID generation logic
+        return productList.isEmpty() ? 1 : productList.stream().mapToInt(Product::getProductID).max().getAsInt() + 1;
     }
 
     private Product findProductByID(int productID) {

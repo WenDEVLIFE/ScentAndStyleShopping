@@ -62,12 +62,15 @@ public class AdminDashboard extends JFrame {
     private void openProductManagement() {
         JOptionPane.showMessageDialog(this, "Opening Product Management...");
         // Add functionality to open product management window
+        ProductManagement productManagement = new ProductManagement();
+        productManagement.setVisible(true);
+        dispose(); // Close current frame
     }
 
     // Method to open order view
     private void openOrderView() {
         JOptionPane.showMessageDialog(this, "Opening Order View...");
-        // Add functionality to open order management window
+
     }
 
     // Method to handle logout
