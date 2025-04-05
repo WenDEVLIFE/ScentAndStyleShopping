@@ -1,12 +1,11 @@
 package com.scentstyle.gui;
 
-import javax.sound.midi.Track;
 import javax.swing.*;
 import com.scentstyle.model.Order;
 import com.scentstyle.model.TrackingModel;
-import com.scentstyle.model.User;
 import database.TrackDB;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -16,9 +15,10 @@ public class TrackOrderFrame extends JFrame {
     private JButton btnTrack;
     private JTextArea txtOrderDetails;
     private List<Order> orderList; // List of all orders
+    private String email; // Placeholder for user name
 
-    public TrackOrderFrame(List<Order> orderList) {
-        this.orderList = orderList;
+    public TrackOrderFrame(String email) {
+        this.email = email;
         
         setTitle("Track Order - Scent & Style");
         setSize(500, 350);
@@ -27,27 +27,35 @@ public class TrackOrderFrame extends JFrame {
         setLayout(null);
 
         JLabel lblOrderID = new JLabel("Enter Order ID:");
-        lblOrderID.setBounds(20, 20, 100, 25);
+        lblOrderID.setBounds(20, 40, 100, 25);
         add(lblOrderID);
 
+        getContentPane().setBackground(Color.ORANGE);
+
         txtOrderID = new JTextField();
-        txtOrderID.setBounds(130, 20, 150, 25);
+        txtOrderID.setBounds(130, 40, 150, 25);
         add(txtOrderID);
 
         btnTrack = new JButton("Track Order");
-        btnTrack.setBounds(300, 20, 120, 25);
+        btnTrack.setBounds(300, 40, 120, 25);
         add(btnTrack);
+
+
+        JLabel lblTitle = new JLabel("Track Your Order");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitle.setBounds(200, 10, 200, 30);
+        add(lblTitle);
 
         txtOrderDetails = new JTextArea();
         txtOrderDetails.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(txtOrderDetails);
-        scrollPane.setBounds(20, 60, 450, 200);
+        scrollPane.setBounds(20, 70, 400, 200);
         add(scrollPane);
 
 
         // Buttons
         JButton btnBack = new JButton("Back");
-        btnBack.setBounds(50, 270, 120, 30);
+        btnBack.setBounds(50, 280, 120, 30);
         add(btnBack);
 
 
@@ -98,7 +106,7 @@ public class TrackOrderFrame extends JFrame {
     }
    private void goBack() {
         // Close the current frame and go back to the previous one
-       UserDasdboard userDashboardFrame = new UserDasdboard();
+       UserDasdboard userDashboardFrame = new UserDasdboard(email);
         userDashboardFrame.setVisible(true);
         dispose();
     }

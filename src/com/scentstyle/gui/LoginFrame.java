@@ -3,6 +3,7 @@ package com.scentstyle.gui;
 import database.LoginDatabase;
 import database.RegisterUser;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ public class LoginFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+
+        getContentPane().setBackground(Color.ORANGE);
 
         JLabel lblEmail = new JLabel("Email:");
         lblEmail.setBounds(50, 50, 120, 25);
@@ -47,10 +50,14 @@ public class LoginFrame extends JFrame {
         add(txtConfirmPassword);
 
         rdoUser = new JRadioButton("User", true);
+        rdoUser.setBackground(Color.ORANGE);
+        rdoUser.setOpaque(true);
         rdoUser.setBounds(180, 160, 80, 25);
         add(rdoUser);
 
         rdoAdmin = new JRadioButton("Admin");
+        rdoAdmin.setBackground(Color.ORANGE);
+        rdoAdmin.setOpaque(true);
         rdoAdmin.setBounds(260, 160, 80, 25);
         add(rdoAdmin);
 
@@ -86,7 +93,7 @@ public class LoginFrame extends JFrame {
             new AdminDashboard().setVisible(true);
             dispose();
         } else {
-            new UserDasdboard().setVisible(true);
+            new UserDasdboard(email).setVisible(true);
             dispose();
         }
     }

@@ -1,6 +1,7 @@
 package com.scentstyle.gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class AdminDashboard extends JFrame {
@@ -13,6 +14,13 @@ public class AdminDashboard extends JFrame {
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+
+        getContentPane().setBackground(Color.ORANGE);
+
+        JLabel lblWelcome = new JLabel("Welcome, Admin" +"!");
+        lblWelcome.setBounds(100, 10, 300, 30);
+        lblWelcome.setFont(new Font("Arial", Font.BOLD, 16));
+        add(lblWelcome);
         
         btnManageProduct = new JButton("Manage Product");
         btnManageProduct.setBounds(100, 50, 200, 30);

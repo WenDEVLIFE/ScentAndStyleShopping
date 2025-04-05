@@ -1,6 +1,7 @@
 package com.scentstyle.gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,20 @@ public class UserDasdboard extends JFrame {
     private List<Product> productList = new ArrayList<>();
     private List<Product> cartItems = new ArrayList<>();
     private List<Order> orderList = new ArrayList<>(); // List to store orders
+    private String email = ""; // Placeholder for user name
 
-    public UserDasdboard() {
+    public UserDasdboard(String email) {
         setTitle("User Dashboard - Scent & Style");
         setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+
+        this.email = email; // Set the username
+        JLabel lblWelcome = new JLabel("Welcome, " + email + "!");
+        lblWelcome.setBounds(100, 10, 300, 30);
+        lblWelcome.setFont(new Font("Arial", Font.BOLD, 16));
+        add(lblWelcome);
 
         // Buttons
         btnViewProducts = new JButton("View Products");
@@ -30,6 +38,7 @@ public class UserDasdboard extends JFrame {
         btnViewCart.setBounds(100, 100, 200, 30);
         add(btnViewCart);
 
+        getContentPane().setBackground(Color.ORANGE);
         btnTrackOrder = new JButton("Track Order");
         btnTrackOrder.setBounds(100, 150, 200, 30);
         add(btnTrackOrder);
@@ -50,18 +59,19 @@ public class UserDasdboard extends JFrame {
     }
 
     private void openProductList() {
-        new ProductListFrame().setVisible(true);
+        new ProductListFrame(email).setVisible(true);
         dispose();
     }
 
+
     private void openCart() {
-        new CartFrame().setVisible(true);
+        new CartFrame(email).setVisible(true);
         dispose();
     }
 
     private void openTrackOrder() {
         // Open TrackOrderFrame with order list
-        new TrackOrderFrame(orderList).setVisible(true);
+        new TrackOrderFrame(email).setVisible(true);
         dispose();
     }
 

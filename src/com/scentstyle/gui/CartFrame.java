@@ -4,11 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import com.scentstyle.model.CartModel;
-import com.scentstyle.model.Product;
 import database.CartDB;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,14 +19,21 @@ public class CartFrame extends JFrame {
     private TextField txtCustomerName, txtAmount;
     private String [] paymentMethods;
     private JComboBox<String> paymentMethodComboBox;
+    private String email;
 
-    public CartFrame() {
+    public CartFrame(String email) {
         // Ensure cartItems is not null, and initialize if necessary
+        this.email = email;
         setTitle("Cart - Scent & Style");
         setSize(500, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
+
+        JLabel lblTitle = new JLabel("Your Cart");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitle.setBounds(200, 10, 200, 30);
+        add(lblTitle);
 
         // Table setup
         String[] columnNames = {"Product Name", "Category", "Price", "Quantity"};
@@ -36,7 +41,7 @@ public class CartFrame extends JFrame {
         tableModel = new DefaultTableModel(columnNames, 0);
         cartTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(cartTable);
-        scrollPane.setBounds(20, 20, 450, 150);
+        scrollPane.setBounds(20, 40, 450, 150);
         add(scrollPane);
 
         // Buttons
@@ -49,6 +54,8 @@ public class CartFrame extends JFrame {
         add(btnBack);
         loadCart(); // Load cart items from the database
         loadCartData();  // Load cart data when frame is initialized
+
+        getContentPane().setBackground(Color.ORANGE);
 
         // Button Listeners
         btnCheckout.addActionListener(e -> checkoutAction());
@@ -160,7 +167,7 @@ public class CartFrame extends JFrame {
 
     // Return to previous frame (User Dashboard)
     private void goBack() {
-        new UserDasdboard().setVisible(true); // Assuming there's a UserDashboard class
+        new UserDasdboard(email).setVisible(true); // Assuming there's a UserDashboard class
         dispose(); // Close the CartFrame
     }
 

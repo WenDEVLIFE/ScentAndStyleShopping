@@ -4,7 +4,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import com.scentstyle.model.Product;
 import database.ProductDB;
-import java.awt.event.*;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,10 @@ public class ProductListFrame extends JFrame {
     private DefaultTableModel tableModel;
     private List<Product> productList;
     private List<Product> cartItems;
+    private String email;
 
-    public ProductListFrame() {
+    public ProductListFrame(String email) {
+        this.email = email;
         productList = ProductDB.getInstance().getProducts();
         List<Product> cartItems = new ArrayList<Product>();
 
@@ -26,20 +29,29 @@ public class ProductListFrame extends JFrame {
         setLayout(null);
 
         // Table setup
+        JLabel lblTitle = new JLabel("Product List");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitle.setBounds(200, 10, 200, 30);
+        add(lblTitle);
+
+
         String[] columnNames = {"Product Name", "Category", "Price", "Stocks"};
         tableModel = new DefaultTableModel(columnNames, 0);
         productTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(productTable);
-        scrollPane.setBounds(20, 20, 450, 150);
+        scrollPane.setBounds(20, 50, 450, 150);
         add(scrollPane);
+
+
+        getContentPane().setBackground(Color.ORANGE);
 
         // Buttons
         btnAddToCart = new JButton("Add to Cart");
-        btnAddToCart.setBounds(50, 200, 120, 30);
+        btnAddToCart.setBounds(50, 220, 120, 30);
         add(btnAddToCart);
 
         btnBack = new JButton("Back");
-        btnBack.setBounds(200, 200, 120, 30);
+        btnBack.setBounds(200, 220, 120, 30);
         add(btnBack);
         
         loadData();
@@ -105,7 +117,7 @@ public class ProductListFrame extends JFrame {
     }
 
     private void goBack() {
-        new UserDasdboard().setVisible(true);
+        new UserDasdboard(email).setVisible(true);
         dispose();
     }                
     @SuppressWarnings("unchecked")
