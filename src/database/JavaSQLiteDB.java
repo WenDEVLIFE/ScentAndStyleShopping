@@ -29,6 +29,9 @@ public class JavaSQLiteDB {
     // This will insert to the tracking table
     public static String insertTrackingSQL = "INSERT INTO TrackingTable (track_id, product_name, category, total_price, customer_name, order_date, status, quantity, pay_amount, payment_option) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    // This will get the tracking table
+    public static String trackingSQL = "SELECT track_id, product_name, category, total_price, customer_name, order_date, status, quantity, pay_amount, payment_option FROM TrackingTable";
+
     public static void main(String[] args) {
         connection();
     }

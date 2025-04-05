@@ -1,7 +1,12 @@
 package com.scentstyle.gui;
 
+import javax.sound.midi.Track;
 import javax.swing.*;
 import com.scentstyle.model.Order;
+import com.scentstyle.model.TrackingModel;
+import com.scentstyle.model.User;
+import database.TrackDB;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -39,6 +44,14 @@ public class TrackOrderFrame extends JFrame {
         scrollPane.setBounds(20, 60, 450, 200);
         add(scrollPane);
 
+
+        // Buttons
+        JButton btnBack = new JButton("Back");
+        btnBack.setBounds(50, 270, 120, 30);
+        add(btnBack);
+
+
+        btnBack.addActionListener(e -> goBack());
         // Button action to track order
         btnTrack.addActionListener(new ActionListener() {
             @Override
@@ -62,7 +75,7 @@ public class TrackOrderFrame extends JFrame {
             int orderID = Integer.parseInt(orderIDText);
 
             // Find order by orderID
-            Order order = findOrderById(orderID);
+            TrackingModel order = TrackDB.getInstance().getOrderDetails(orderID);
 
             if (order != null) {
                 displayOrderDetails(order);
@@ -83,24 +96,29 @@ public class TrackOrderFrame extends JFrame {
         }
         return null;
     }
+   private void goBack() {
+        // Close the current frame and go back to the previous one
+       UserDasdboard userDashboardFrame = new UserDasdboard();
+        userDashboardFrame.setVisible(true);
+        dispose();
+    }
+
 
     // Display order details
-    private void displayOrderDetails(Order order) {
-        StringBuilder details = new StringBuilder();
-        details.append("Order ID: ").append(order.getOrderID()).append("\n");
-        details.append("Customer Name: ").append(order.getCustomerName()).append("\n");
-        details.append("Order Date: ").append(order.getOrderDate()).append("\n");
-        details.append("Status: ").append(order.getStatus()).append("\n");
-        details.append("Items:\n");
+    // Display order details
+    private void displayOrderDetails(TrackingModel order) {
+        String details = "Order ID: " + order.getTrackID() + "\n" +
+                "Customer Name: " + order.getCustomerName() + "\n" +
+                "Order Date: " + order.getOrderDate() + "\n" +
+                "Status: " + order.getStatus() + "\n" +
+                "Product Name: " + order.getProductName() + "\n" +
+                "Category: " + order.getCategory() + "\n" +
+                "Quantity: " + order.getQuantity() + "\n" +
+                "Price: ₱" + order.getTotalPrice() + "\n" +
+                "Payment Option: " + order.getPaymentOption() + "\n" +
+                "Pay Amount: ₱" + order.getPayAmount() + "\n";
 
-        order.getProducts().forEach(product -> {
-            details.append("- ").append(product.getName()).append(" | Qty: ")
-                    .append(product.getStock()).append(" | Price: ₱")
-                    .append(product.getPrice()).append("\n");
-        });
-
-        details.append("\nTotal Amount: ₱").append(order.getTotalAmount());
-        txtOrderDetails.setText(details.toString());
+        txtOrderDetails.setText(details);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
