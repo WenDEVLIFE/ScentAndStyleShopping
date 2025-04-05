@@ -2,7 +2,6 @@ package com.scentstyle.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import com.scentstyle.model.CartModel;
 import database.CartDB;
 
@@ -17,74 +16,67 @@ public class CartFrame extends JFrame {
     private DefaultTableModel tableModel;
     private List<CartModel> cartItems;
     private TextField txtCustomerName, txtAmount;
-    private String [] paymentMethods;
+    private String[] paymentMethods;
     private JComboBox<String> paymentMethodComboBox;
     private String email;
 
     public CartFrame(String email) {
-        // Ensure cartItems is not null, and initialize if necessary
         this.email = email;
+        cartItems = new ArrayList<>();
+
         setTitle("Cart - Scent & Style");
-        setSize(500, 300);
+        setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
+        getContentPane().setBackground(Color.ORANGE);
+        setLayout(new BorderLayout());
 
         JLabel lblTitle = new JLabel("Your Cart");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitle.setBounds(200, 10, 200, 30);
-        add(lblTitle);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        add(lblTitle, BorderLayout.NORTH);
 
-        // Table setup
         String[] columnNames = {"Product Name", "Category", "Price", "Quantity"};
         paymentMethods = new String[]{"Select a payment", "Cash on Delivery", "Credit Card", "Debit Card", "Mobile Payment"};
         tableModel = new DefaultTableModel(columnNames, 0);
         cartTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(cartTable);
-        scrollPane.setBounds(20, 40, 450, 150);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.ORANGE);
         btnCheckout = new JButton("Checkout");
-        btnCheckout.setBounds(50, 200, 120, 30);
-        add(btnCheckout);
-
         btnBack = new JButton("Back");
-        btnBack.setBounds(200, 200, 120, 30);
-        add(btnBack);
-        loadCart(); // Load cart items from the database
-        loadCartData();  // Load cart data when frame is initialized
+        buttonPanel.add(btnCheckout);
+        buttonPanel.add(btnBack);
+        add(buttonPanel, BorderLayout.SOUTH);
 
-        getContentPane().setBackground(Color.ORANGE);
-
-        // Button Listeners
         btnCheckout.addActionListener(e -> checkoutAction());
         btnBack.addActionListener(e -> goBack());
+
+        loadCart();
+        loadCartData();
     }
 
-    void loadCart(){
+    void loadCart() {
         cartTable.clearSelection();
-        cartItems = new ArrayList<>();
-        cartItems = CartDB.getInstance().getCartItems(); // Fetch cart items from the database
-        loadCartData(); // Load data into the table
+        cartItems = CartDB.getInstance().getCartItems();
+        loadCartData();
     }
 
-    // Load cart data into the table properly
     private void loadCartData() {
-        tableModel.setRowCount(0); // Clear existing rows in the table
+        tableModel.setRowCount(0);
         for (CartModel product : cartItems) {
-            // Assuming product.getQuantityInCart() holds the quantity for each product in the cart
             Object[] row = {
-                product.getProductname(),
-                product.getCategory(),
-                product.getPrice(),
-                product.getQuantity()
+                    product.getProductname(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    product.getQuantity()
             };
-            tableModel.addRow(row); // Add row to the table
+            tableModel.addRow(row);
         }
     }
 
-    // Checkout action
     private void checkoutAction() {
         int selectedRow = cartTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -129,7 +121,7 @@ public class CartFrame extends JFrame {
                             double priceAmount = Double.parseDouble(amount);
                             if (priceAmount < totalPrice) {
                                 JOptionPane.showMessageDialog(this, "Insufficient amount. Please enter a valid amount.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                                return; // Exit the method if checkout is cancelled
+                                return;
                             } else {
                                 HashMap<String, Object> orderDetails = new HashMap<>();
                                 orderDetails.put("product_name", productName);
@@ -142,55 +134,35 @@ public class CartFrame extends JFrame {
                                 orderDetails.put("total_price", totalPrice);
                                 orderDetails.put("order_date", java.time.LocalDate.now().toString());
                                 orderDetails.put("status", "Pending");
-                                orderDetails.put("product_id", cartItems.get(selectedRow).getProductID()); // Assuming getProductID() method exists
+                                orderDetails.put("product_id", cartItems.get(selectedRow).getProductID());
                                 orderDetails.put("pay_amount", priceAmount);
                                 orderDetails.put("payment_option", selectedPaymentMethod);
-                                orderDetails.put("order_id", cartItems.get(selectedRow).getOrderID()); // Assuming getOrderID() method exists
-                                CartDB.getInstance().insertOrder(orderDetails); // Insert order into the database
-                                loadCartData(); // Refresh the table after checkout
+                                orderDetails.put("order_id", cartItems.get(selectedRow).getOrderID());
+                                CartDB.getInstance().insertOrder(orderDetails);
+                                loadCartData();
                             }
                         } else {
                             JOptionPane.showMessageDialog(this, "Total Amount is Empty, Please Enter your amount.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                            return; // Exit the method if checkout is cancelled
+                            return;
                         }
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Payment method selection cancelled.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return; // Exit the method if checkout is cancelled
+                    return;
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Customer Name is Empty, Please Enter your name.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                return; // Exit the method if checkout is cancelled
+                return;
             }
         }
     }
 
-    // Return to previous frame (User Dashboard)
     private void goBack() {
-        new UserDasdboard(email).setVisible(true); // Assuming there's a UserDashboard class
-        dispose(); // Close the CartFrame
+        new UserDasdboard(email).setVisible(true);
+        dispose();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> new CartFrame("example@example.com").setVisible(true));
+    }
 }

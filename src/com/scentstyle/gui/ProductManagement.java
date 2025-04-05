@@ -13,68 +13,64 @@ public class ProductManagement extends JFrame {
     private JButton btnAddProduct, btnEditProduct, btnDeleteProduct, btnBack;
     private DefaultTableModel tableModel;
     private List<Product> productList;
-    
-    public ProductManagement(){
-        // Sample product list for demonstration
-        productList = ProductDB.getInstance().getProducts();
-        
-        setTitle("Product Management - Scent & Style");
-        setSize(600, 350);
-        setLocationRelativeTo(null);
-        
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        getContentPane().setBackground(Color.ORANGE);
-        setLayout(null);
 
-        // Table setup
+    public ProductManagement() {
+        initComponents();
+        loadProductData();
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Product Management - Scent & Style");
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.ORANGE);
+        setLayout(new BorderLayout());
+
         JLabel lblTitle = new JLabel("Product List");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitle.setBounds(200, 10, 200, 30);
-        add(lblTitle);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        add(lblTitle, BorderLayout.NORTH);
 
-        String[] columnNames = {"Product ID","Product Name", "Category", "Price", "Stocks"};
+        String[] columnNames = {"Product ID", "Product Name", "Category", "Price", "Stocks"};
         tableModel = new DefaultTableModel(columnNames, 0);
         productTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(productTable);
-        scrollPane.setBounds(20, 40, 550, 150);
-        add(scrollPane);
-        
-        btnAddProduct = new JButton("Add Product");
-        btnAddProduct.setBounds(50, 200, 120, 30);
-        add(btnAddProduct);
-        
-        btnEditProduct = new JButton("Edit Product");
-        btnEditProduct.setBounds(200, 200, 120, 30);
-        add(btnEditProduct);
-        
-        btnDeleteProduct = new JButton("Delete Product");
-        btnDeleteProduct.setBounds(350, 200, 150, 30);
-        add(btnDeleteProduct);
-        
-        btnBack = new JButton("Back");
-        btnBack.setBounds(250, 250, 120, 30);
-        add(btnBack);
+        add(scrollPane, BorderLayout.CENTER);
 
-        loadData();
-        loadProductData();
-        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.ORANGE);
+        btnAddProduct = new JButton("Add Product");
+        btnEditProduct = new JButton("Edit Product");
+        btnDeleteProduct = new JButton("Delete Product");
+        btnBack = new JButton("Back");
+        buttonPanel.add(btnAddProduct);
+        buttonPanel.add(btnEditProduct);
+        buttonPanel.add(btnDeleteProduct);
+        buttonPanel.add(btnBack);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         btnAddProduct.addActionListener(e -> addProductAction());
         btnEditProduct.addActionListener(e -> editProductAction());
         btnDeleteProduct.addActionListener(e -> deleteProductAction());
         btnBack.addActionListener(e -> goBack());
-    }
-    
-    void loadData(){
-        try{
-            productList = ProductDB.getInstance().getProducts();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
+    }// </editor-fold>//GEN-END:initComponents
+
     private void loadProductData() {
-        tableModel.setRowCount(0);
+        productList = ProductDB.getInstance().getProducts();
+        tableModel.setRowCount(0); // Clear existing data
+
         for (Product product : productList) {
-            Object [] row = {product.getProductID(), product.getName(), product.getCategory(), product.getPrice(), product.getStock()};
+            Object[] row = {
+                    product.getProductID(),
+                    product.getName(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    product.getStock()
+            };
             tableModel.addRow(row);
         }
     }
@@ -181,26 +177,8 @@ public class ProductManagement extends JFrame {
         }
         return null;
     }
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> new ProductManagement().setVisible(true));
+    }
 }

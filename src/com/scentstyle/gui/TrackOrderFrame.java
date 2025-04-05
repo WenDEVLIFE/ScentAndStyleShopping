@@ -12,68 +12,60 @@ import java.util.List;
 
 public class TrackOrderFrame extends JFrame {
     private JTextField txtOrderID;
-    private JButton btnTrack;
+    private JButton btnTrack, btnBack;
     private JTextArea txtOrderDetails;
-    private List<Order> orderList; // List of all orders
-    private String email; // Placeholder for user name
+    private List<Order> orderList;
+    private String email;
 
     public TrackOrderFrame(String email) {
         this.email = email;
-        
+
         setTitle("Track Order - Scent & Style");
-        setSize(500, 350);
+        setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
-
-        JLabel lblOrderID = new JLabel("Enter Order ID:");
-        lblOrderID.setBounds(20, 40, 100, 25);
-        add(lblOrderID);
-
         getContentPane().setBackground(Color.ORANGE);
-
-        txtOrderID = new JTextField();
-        txtOrderID.setBounds(130, 40, 150, 25);
-        add(txtOrderID);
-
-        btnTrack = new JButton("Track Order");
-        btnTrack.setBounds(300, 40, 120, 25);
-        add(btnTrack);
-
+        setLayout(new BorderLayout());
 
         JLabel lblTitle = new JLabel("Track Your Order");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitle.setBounds(200, 10, 200, 30);
-        add(lblTitle);
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        add(lblTitle, BorderLayout.NORTH);
+
+        JPanel inputPanel = new JPanel();
+        inputPanel.setBackground(Color.ORANGE);
+        JLabel lblOrderID = new JLabel("Enter Order ID:");
+        txtOrderID = new JTextField(15);
+        btnTrack = new JButton("Track Order");
+        inputPanel.add(lblOrderID);
+        inputPanel.add(txtOrderID);
+        inputPanel.add(btnTrack);
+        add(inputPanel, BorderLayout.NORTH);
 
         txtOrderDetails = new JTextArea();
         txtOrderDetails.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(txtOrderDetails);
-        scrollPane.setBounds(20, 70, 400, 200);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.ORANGE);
+        btnBack = new JButton("Back");
+        buttonPanel.add(btnBack);
+        add(buttonPanel, BorderLayout.SOUTH);
 
-        // Buttons
-        JButton btnBack = new JButton("Back");
-        btnBack.setBounds(50, 280, 120, 30);
-        add(btnBack);
-
-
-        btnBack.addActionListener(e -> goBack());
-        // Button action to track order
         btnTrack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 trackOrder();
             }
         });
+
+        btnBack.addActionListener(e -> goBack());
     }
 
-    // Track order and display details
     private void trackOrder() {
         String orderIDText = txtOrderID.getText().trim();
 
-        // Validate order ID input
         if (orderIDText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a valid Order ID.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -81,8 +73,6 @@ public class TrackOrderFrame extends JFrame {
 
         try {
             int orderID = Integer.parseInt(orderIDText);
-
-            // Find order by orderID
             TrackingModel order = TrackDB.getInstance().getOrderDetails(orderID);
 
             if (order != null) {
@@ -95,25 +85,11 @@ public class TrackOrderFrame extends JFrame {
         }
     }
 
-    // Search for order by ID
-    private Order findOrderById(int orderID) {
-        for (Order order : orderList) {
-            if (order.getOrderID() == orderID) {
-                return order;
-            }
-        }
-        return null;
-    }
-   private void goBack() {
-        // Close the current frame and go back to the previous one
-       UserDasdboard userDashboardFrame = new UserDasdboard(email);
-        userDashboardFrame.setVisible(true);
+    private void goBack() {
+        new UserDasdboard(email).setVisible(true);
         dispose();
     }
 
-
-    // Display order details
-    // Display order details
     private void displayOrderDetails(TrackingModel order) {
         String details = "Order ID: " + order.getTrackID() + "\n" +
                 "Customer Name: " + order.getCustomerName() + "\n" +
@@ -128,26 +104,8 @@ public class TrackOrderFrame extends JFrame {
 
         txtOrderDetails.setText(details);
     }
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> new TrackOrderFrame("example@example.com").setVisible(true));
+    }
 }
