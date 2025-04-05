@@ -4,9 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/database/JavaSQLiteDB.java</file>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/database/ProductDB.java</file>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/ProductListFrame.java</file>
-            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/UserDasdboard.java</file>
+            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/model/CartModel.java</file>
+            <file>file:/C:/Users/Frouen%20Junior/Documents/NetBeansProjects/ScentAndStyleShoppingSystemGUI/src/com/scentstyle/gui/OrderManagement.java</file>
         </group>
     </open-files>
 </project-private>
